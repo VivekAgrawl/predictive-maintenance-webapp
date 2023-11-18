@@ -1,0 +1,6 @@
+pandas
+streamlit==1.27.1
+altair==5.1.1
+numpy
+joblib
+pycaret==3.2.0
