@@ -4,12 +4,11 @@ import altair as alt
 import numpy as np 
 import joblib
 alt.data_transformers.disable_max_rows()
-
+st.set_page_config(page_title = "Maintenance Predictions", page_icon= "⚙")
 # Headings
-st.write("""
-    # Predictive Maintenance for Industrial Devices
-    *Empowering Manufacturing Efficiency through Smart Maintenance Predictions*
-""")
+st.title("Predictive Maintenance for Industrial Devices")
+st.write("*Empowering Manufacturing Efficiency through Smart Maintenance Predictions*")
+
 
 # Sidebar Input Details
 st.sidebar.header('Input Details')
@@ -81,17 +80,19 @@ with tab1:
 with tab2:
     st.write("*See how your input data aligns with the predictive analysis. Understand where your devices stand in comparison to the data, facilitating informed decisions on maintenance priorities.*")
     input_feature = st.selectbox('Feature',('Type', 'Air Temperature', 'Process Temperature', 'Rotational Speed', 'Torque', 'Tool Wear'))
+    
     data = pd.read_csv("predictive_maintenance.csv")
     data.columns = ['UDI', 'Product ID', 'Type', 'Air Temperature', 'Process Temperature', 'Rotational Speed', 'Torque', 'Tool wear', 'Machine failure', 'Failure type']
     data = data.drop(['UDI', 'Product ID', 'Failure type'], axis = 1)
     data = data[data['Machine failure'] == prediction[0]]
+
     if input_feature == 'Type':
         chart = alt.Chart(data).mark_bar().encode(
             x='Type:O',
             y="count()",
             color=alt.condition(
                 alt.datum.Type == input_df_copy['Type'].values[0],
-                alt.value('orange'), 
+                alt.value('#ff4c4c'), 
                 alt.value('steelblue'))
         )
         st.altair_chart(chart, use_container_width = True)
@@ -103,7 +104,7 @@ with tab2:
             y='count()',
             color = alt.value('steelblue')
         )
-        rule = base.mark_rule(color='orange').encode(
+        rule = base.mark_rule(color='#ff4c4c').encode(
             x = alt.datum(input_df_copy['Air Temperature'].values[0]),
             size=alt.value(3)
         )
@@ -116,7 +117,7 @@ with tab2:
             y='count()',
             color = alt.value('steelblue')
         )
-        rule = base.mark_rule(color='orange').encode(
+        rule = base.mark_rule(color='#ff4c4c').encode(
             x = alt.datum(input_df_copy['Process Temperature'].values[0]),
             size=alt.value(3)
         )
@@ -129,7 +130,7 @@ with tab2:
             y='count()',
             color = alt.value('steelblue')
         )
-        rule = base.mark_rule(color='orange').encode(
+        rule = base.mark_rule(color='#ff4c4c').encode(
             x = alt.datum(input_df_copy['Rotational Speed'].values[0]),
             size=alt.value(3)
         )
@@ -142,7 +143,7 @@ with tab2:
             y='count()',
             color = alt.value('steelblue')
         )
-        rule = base.mark_rule(color='orange').encode(
+        rule = base.mark_rule(color='#ff4c4c').encode(
             x = alt.datum(input_df_copy['Torque'].values[0]),
             size=alt.value(3)
         )
@@ -155,7 +156,7 @@ with tab2:
             y='count()',
             color = alt.value('steelblue')
         )
-        rule = base.mark_rule(color='orange').encode(
+        rule = base.mark_rule(color='#ff4c4c').encode(
             x = alt.datum(input_df_copy['Tool wear'].values[0]),
             size=alt.value(3)
         )
@@ -165,16 +166,34 @@ with tab2:
 # Tab 3
 with tab3:
     st.write("""
-        This project revolves around using data from a manufacturing company's industrial devices. The data helps predict when these devices need maintenance, preventing breakdowns and saving money. As companies grow, keeping track of maintenance manually becomes hard. So, we propose a smart solution: using data from sensors to predict when maintenance is needed.
+        Welcome to an innovative project designed to enhance maintenance efficiency for manufacturing companies! Our machine learning model, incorporated into a user-friendly web app, predicts maintenance needs in real time by analyzing data from industrial devices. This proactive solution empowers companies to tackle issues before they cause downtime and increased costs.
 
-        The goal is to analyze the data from these sensors to figure out the best time to do maintenance on the devices. We'll use advanced techniques to do this efficiently.
+        The key components of the project include:
 
-        * **Type:**  Categorized as L, M, or H representing low (50% of all products), medium (30%), and high (20%) product quality variants, each with a variant-specific serial number.
-        * **Air Temperature [K]:** The temperature of the surrounding air measured in Kelvin.
-        * **Process Temperature [K]:** The temperature of the manufacturing process measured in Kelvin.
+        * **Type:** Products are categorized as low (L), medium (M), or high (H) quality variants, each with a specific serial number.
+        * **Air Temperature [K]:** The temperature of the surrounding air, measured in Kelvin.
+        * **Process Temperature [K]:** The temperature of the manufacturing process, measured in Kelvin.
         * **Rotational Speed [rpm]:** The speed at which the device rotates, measured in revolutions per minute.
-        * **Torque [Nm]:** The torque applied to the device, measured in Newton-meters.
+        * **Torque [Nm]:** The applied torque to the device, measured in Newton-meters.
         * **Tool Wear [min]:** The duration of tool usage, measured in minutes.
 
-        By studying this data, we have created accurate models to predict maintenance needs. This will help the company know when to fix their devices, reducing downtime and costs. Automating this process is a modern solution to the challenges of keeping up with maintenance as companies get bigger and their operations get more complex.
+        To explore the code and understand how our solution automates this process effectively, check out the project on [Kaggle](https://www.kaggle.com/code/atom1991/optimizing-operations-with-predictive-maintenance?kernelSessionId=146948811).
     """)
+
+
+st.write("---")
+
+st.write("""#### About Me""")
+st.write(" ")
+st.write("""
+            I'm Vivek Agrawal, an accomplished data scientist with expertise in data mining, data visualization, and machine learning.
+                 
+            [Portfolio](https://www.vivekagrawal.space) | [Linkedin](https://www.linkedin.com/in/ivivekagrawal) | [Github](https://github.com/VivekAgrawl) | [Kaggle](https://www.kaggle.com/atom1991)
+        """)
+
+# Disclaimer
+st.sidebar.write("---")
+st.sidebar.write("""
+        _This web app is intended for practical and showcase purposes only. It is part of a project to demonstrate implementation and may not be suitable for critical or production use. The developer assumes no responsibility for any consequences arising from the use of this application._
+            
+""")
