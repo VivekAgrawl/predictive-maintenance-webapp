@@ -35,7 +35,7 @@ input_df_copy = input_df.copy()
 tab1, tab2, tab3 = st.tabs(['Maintenance Prediction', 'Result Explanation', 'About the Project'])
 # Tab 1
 with tab1:
-    st.warning('Attention: Adjust the sliders or select values in the **sidebar** to input essential operational data.', icon="⚠️")
+    st.info('Adjust the sliders or select values in the **sidebar** to input essential operational data', icon="ℹ️")
     st.subheader('Input Details')
     st.write(f"""
             * **Type:** {input_df['Type'].values[0]}
