@@ -6,12 +6,13 @@ import joblib
 alt.data_transformers.disable_max_rows()
 st.set_page_config(page_title = "Maintenance Predictions", page_icon= "⚙")
 # Headings
-st.title("Predictive Maintenance for Industrial Devices")
+st.title("🛠️ Predictive Maintenance for Industrial Devices 🔍")
 st.write("*Empowering Manufacturing Efficiency through Smart Maintenance Predictions*")
-
+st.divider()
 
 # Sidebar Input Details
 st.sidebar.header('Input Details')
+st.sidebar.divider()
 
 def user_input_features():
     type_device = st.sidebar.selectbox('Type',('L','M','H'))
@@ -32,9 +33,10 @@ def user_input_features():
 input_df = user_input_features()
 input_df_copy = input_df.copy()
 
-tab1, tab2, tab3 = st.tabs(['Maintenance Prediction', 'Result Explanation', 'About the Project'])
+tab1, tab2, tab3 = st.tabs(['🔍 Maintenance Prediction', '📊 Result Explanation', '🌐 About the Project'])
 # Tab 1
 with tab1:
+    st.write("Welcome to the Predictive Maintenance for Industrial Devices web application! This web app predicts maintenance needs by analyzing data from industrial devices, ensuring proactive and efficient operations.")
     st.info('Adjust the sliders or select values in the **sidebar** to input essential operational data', icon="ℹ️")
     st.subheader('Input Details')
     st.write(f"""
@@ -79,7 +81,8 @@ with tab1:
 # Tab 2
 with tab2:
     st.write("*See how your input data aligns with the predictive analysis. Understand where your devices stand in comparison to the data, facilitating informed decisions on maintenance priorities.*")
-    input_feature = st.selectbox('Feature',('Type', 'Air Temperature', 'Process Temperature', 'Rotational Speed', 'Torque', 'Tool Wear'))
+    input_feature = st.selectbox('Select Feature',('Type', 'Air Temperature', 'Process Temperature', 'Rotational Speed', 'Torque', 'Tool Wear'))
+    st.write(" ")
     
     data = pd.read_csv("predictive_maintenance.csv")
     data.columns = ['UDI', 'Product ID', 'Type', 'Air Temperature', 'Process Temperature', 'Rotational Speed', 'Torque', 'Tool wear', 'Machine failure', 'Failure type']
@@ -88,8 +91,8 @@ with tab2:
 
     if input_feature == 'Type':
         chart = alt.Chart(data).mark_bar().encode(
-            x='Type:O',
-            y="count()",
+            alt.X('Type:O'),
+            alt.Y("count()", title = "Counts"),
             color=alt.condition(
                 alt.datum.Type == input_df_copy['Type'].values[0],
                 alt.value('#ff4c4c'), 
@@ -100,8 +103,8 @@ with tab2:
         base = alt.Chart(data)
 
         bar = base.mark_bar().encode(
-            alt.X('Air Temperature:Q').bin().axis(None),
-            y='count()',
+            alt.X('Air Temperature:Q', title = 'Air Temperature (K)').bin(maxbins = 15),
+            alt.Y('count()', title = "Frequency"),
             color = alt.value('steelblue')
         )
         rule = base.mark_rule(color='#ff4c4c').encode(
@@ -113,8 +116,8 @@ with tab2:
         base = alt.Chart(data)
 
         bar = base.mark_bar().encode(
-            alt.X('Process Temperature:Q').bin().axis(None),
-            y='count()',
+            alt.X('Process Temperature:Q', title = 'Process Temperature (K)').bin(maxbins = 15),
+            alt.Y('count()', title = "Frequency"),
             color = alt.value('steelblue')
         )
         rule = base.mark_rule(color='#ff4c4c').encode(
@@ -126,8 +129,8 @@ with tab2:
         base = alt.Chart(data)
 
         bar = base.mark_bar().encode(
-            alt.X('Rotational Speed:Q').bin().axis(None),
-            y='count()',
+            alt.X('Rotational Speed:Q', title = 'Rotational Speed (RPM)').bin(maxbins = 15),
+            alt.Y('count()', title = "Frequency"),
             color = alt.value('steelblue')
         )
         rule = base.mark_rule(color='#ff4c4c').encode(
@@ -139,8 +142,8 @@ with tab2:
         base = alt.Chart(data)
 
         bar = base.mark_bar().encode(
-            alt.X('Torque:Q').bin().axis(None),
-            y='count()',
+            alt.X('Torque:Q', title = 'Torque (Nm)').bin(maxbins = 15),
+            alt.Y('count()', title = "Frequency"),
             color = alt.value('steelblue')
         )
         rule = base.mark_rule(color='#ff4c4c').encode(
@@ -152,8 +155,8 @@ with tab2:
         base = alt.Chart(data)
 
         bar = base.mark_bar().encode(
-            alt.X('Tool wear:Q').bin().axis(None),
-            y='count()',
+            alt.X('Tool wear:Q', title = 'Tool Wear (min)').bin(maxbins = 15),
+            alt.Y('count()', title = "Frequency"),
             color = alt.value('steelblue')
         )
         rule = base.mark_rule(color='#ff4c4c').encode(
@@ -173,7 +176,7 @@ with tab3:
         * **Type:** Products are categorized as low (L), medium (M), or high (H) quality variants, each with a specific serial number.
         * **Air Temperature [K]:** The temperature of the surrounding air, measured in Kelvin.
         * **Process Temperature [K]:** The temperature of the manufacturing process, measured in Kelvin.
-        * **Rotational Speed [rpm]:** The speed at which the device rotates, measured in revolutions per minute.
+        * **Rotational Speed [RPM]:** The speed at which the device rotates, measured in revolutions per minute.
         * **Torque [Nm]:** The applied torque to the device, measured in Newton-meters.
         * **Tool Wear [min]:** The duration of tool usage, measured in minutes.
 
@@ -192,8 +195,8 @@ st.write("""
         """)
 
 # Disclaimer
-st.sidebar.write("---")
-st.sidebar.write("""
+st.divider()
+st.caption("""
         _This web app is intended for practical and showcase purposes only. It is part of a project to demonstrate implementation and may not be suitable for critical or production use. The developer assumes no responsibility for any consequences arising from the use of this application._
             
 """)
